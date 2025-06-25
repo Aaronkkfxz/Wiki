@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Níveis - WikiHub | Guia Completo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/boss.css" />
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header id="cabecalho">
+    <div class="container">
+      <div class="cabecalho-conteudo">
+        <a href="index.html" class="logo">
+          <div class="logo-icone">W</div>
+          WikiCub
+        </a>
+        <nav class="navegacao">
+          <a href="index.html">Início</a>
+          <a href="#explorar">Explorar</a>
+          <a href="#niveis" class="ativo">Níveis</a>
+          <a href="#comunidade">Comunidade</a>
+          <a href="#contato">Contato</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Seção Título -->
+  <section id="secao-titulo">
+    <div class="fundo-titulo"></div>
+    <div class="container">
+      <div class="titulo-conteudo">
+        <nav class="breadcrumb">
+          <a href="index.html">Início</a>
+          <span>›</span>
+          <span>Níveis</span>
+        </nav>
+        <h1 class="titulo-pagina">Níveis</h1>
+        <p class="subtitulo-pagina">
+          Explore todos os desafios Run 'n Gun e fases especiais espalhados pelas ilhas de Cuphead.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção Filtros -->
+  <section id="secao-filtros">
+    <div class="container">
+      <div class="filtros-container">
+        <div class="filtros-grupo">
+          <button class="filtro-botao ativo" data-filtro="todos">Todos</button>
+          <button class="filtro-botao" data-filtro="ilha1">Ilha I</button>
+          <button class="filtro-botao" data-filtro="ilha2">Ilha II</button>
+          <button class="filtro-botao" data-filtro="ilha3">Ilha III</button>
+          <button class="filtro-botao" data-filtro="final">Ilha Final</button>
+          <button class="filtro-botao" data-filtro="dlc">DLC</button>
+        </div>
+        <div class="barra-pesquisa">
+          <span class="icone-pesquisa">🔍</span>
+          <input type="text" class="campo-pesquisa" placeholder="Pesquisar níveis..." id="campoPesquisa" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção Níveis -->
+  <section id="secao-chefes">
+    <div class="container">
+      <div class="grade-chefes" id="gradeFases">
+        <!-- Níveis serão inseridos via JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const fasesCuphead = [
+      { nome: "Forest Follies", tipo: "Run 'n Gun", dificuldade: "facil", ilha: "ilha1", icone: "🌲", descricao: "Fase inicial na floresta com obstáculos básicos." },
+      { nome: "Tree Top Trouble", tipo: "Run 'n Gun", dificuldade: "medio", ilha: "ilha1", icone: "🌳", descricao: "Plataformas verticais e inimigos aéreos." },
+      { nome: "Funfair Fever", tipo: "Run 'n Gun", dificuldade: "medio", ilha: "ilha2", icone: "🎡", descricao: "Parque de diversões com seções móveis." },
+      { nome: "Funhouse Frazzle", tipo: "Run 'n Gun", dificuldade: "medio", ilha: "ilha2", icone: "🎭", descricao: "Gravidade invertida e espelhos confusos." },
+      { nome: "Perilous Piers", tipo: "Run 'n Gun", dificuldade: "dificil", ilha: "ilha3", icone: "🌊", descricao: "Inimigos aquáticos e seções submersas." },
+      { nome: "Rugged Ridge", tipo: "Run 'n Gun", dificuldade: "dificil", ilha: "ilha3", icone: "🏔️", descricao: "Fase montanhosa com gigantes de pedra." },
+      { nome: "Dramatic Fanatic", tipo: "Fase de Transição", dificuldade: "medio", ilha: "final", icone: "🎬", descricao: "Teatro com inimigos variados e atos." },
+      { nome: "King’s Leap", tipo: "Desafio Especial", dificuldade: "medio", ilha: "dlc", icone: "♛", descricao: "Desafio sem armas contra peças de xadrez." },
+      { nome: "The Delicious Last Course", tipo: "Exploração", dificuldade: "variada", ilha: "dlc", icone: "🍽️", descricao: "Acesso a novos chefes e fases bônus." }
+    ];
+
+    const grade = document.getElementById("gradeFases");
+    const campoPesquisa = document.getElementById("campoPesquisa");
+    const botoes = document.querySelectorAll(".filtro-botao");
+
+    function renderizarFases(fases) {
+      grade.innerHTML = "";
+      fases.forEach(fase => {
+        const div = document.createElement("div");
+        div.className = "cartao-chefe";
+        div.innerHTML = `
+          <div class="imagem-chefe">${fase.icone}
+            <div class="nivel-dificuldade nivel-${fase.dificuldade}">${fase.dificuldade}</div>
+          </div>
+          <div class="conteudo-chefe">
+            <h2 class="nome-chefe">${fase.nome}</h2>
+            <div class="tipo-chefe">${fase.tipo}</div>
+            <div class="descricao-chefe">${fase.descricao}</div>
+          </div>
+        `;
+        grade.appendChild(div);
+      });
+    }
+
+    renderizarFases(fasesCuphead);
+
+    botoes.forEach(botao => {
+      botao.addEventListener("click", () => {
+        botoes.forEach(b => b.classList.remove("ativo"));
+        botao.classList.add("ativo");
+
+        const filtro = botao.dataset.filtro;
+        if (filtro === "todos") {
+          renderizarFases(fasesCuphead);
+        } else {
+          const filtradas = fasesCuphead.filter(f => f.ilha === filtro);
+          renderizarFases(filtradas);
+        }
+      });
+    });
+
+    campoPesquisa.addEventListener("input", () => {
+      const termo = campoPesquisa.value.toLowerCase();
+      const resultados = fasesCuphead.filter(fase =>
+        fase.nome.toLowerCase().includes(termo) ||
+        fase.tipo.toLowerCase().includes(termo)
+      );
+      renderizarFases(resultados);
+    });
+  </script>
+</body>
+</html>
